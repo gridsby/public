@@ -28,9 +28,50 @@ Now, you have 5 pieces of information, which you'll need to hardcode into your a
 
 ## API
 
-Our API, currently, consists of 2 methods:
+### Introspection
 
-### list
+#### predicates
+
+API endpoint: `https://api.grids.by/v1/predicates.json`
+
+Parameters:
+
+* `graph` [required]
+
+Example query: `https://api.grids.by/v1/predicates.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis`
+
+OAuth signature is required.
+
+Returns list of RDF-predicates, which are present in graph.
+
+Valid responses are:
+
+* 200 OK, `Content-type: application/json`, body is an array of URIs
+* 4xx — various errors
+
+#### values
+
+API endpoint: `https://api.grids.by/v1/values.json`
+
+Parameters:
+
+* `graph` [required]
+* `predicate` [required]
+
+Example query: `https://api.grids.by/v1/value.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&predicate=http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23label`
+
+OAuth signature is required.
+
+Returns list of values, which correspond to the predicate given, in this graph.
+
+Valid responses are:
+
+* 200 OK, `Content-type: application/json`, body is an array of strings
+* 4xx — various errors
+
+### Read data
+
+#### list
 
 API endpoint: `https://api.grids.by/v1/list.json`
 
@@ -39,7 +80,7 @@ Parameters:
 * `graph` [required]
 * you can use any number of `filters[n][predicate]=value` parameters to filter dataset (don't forget to "urlencode" them)
 
-Example query: `https://api.grids.by/v1/list.json?graph=http://grids.by/graphs/web-apis&filters[0][schema:name]=BitBucket&filters[1][schema:name]=GitHub`
+Example query: `https://api.grids.by/v1/list.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&filters%5B0%5D%5Bschema%3Aname%5D=BitBucket&filters%5B1%5D%5Bschema%3Aname%5D=GitHub`
 
 If you're planning on passing a lot of parameters it's recommended to use POST and provide the parameters in the request body as a JSON (make sure to provide proper `Content-type` header):
 
@@ -62,7 +103,7 @@ Valid responses are:
 * 200 OK, `Content-type: application/json`, body is an array of URIs, which are "subjects" of the items
 * 4xx — various errors
 
-### get
+#### get
 
 API endpoint: `https://api.grids.by/v1/get.json`
 
