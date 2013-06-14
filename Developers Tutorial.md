@@ -132,3 +132,29 @@ Valid responses are:
 
 * 200 OK, `Content-type: application/ld+json`
 * 4xx — various errors
+
+### Write data
+
+#### append
+
+API endpoint: `https://api.grids.by/v1/append`
+
+Parameters:
+
+* `graph` [required]
+
+Example query: `http://api.gridsby.by/v1/append?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fmovies`
+
+This should be a POST request, POST body should contain the triples to import in Turtle or JSON-LD format with the appropriate headers `text/turtle` or `application/ld+json` respectively. 
+
+OAuth signature is required
+
+Triples would be imported into requested graph (if application has enough permissions).
+
+Check HTTP status code. Valid responses are:
+
+* 200 OK, Content-type: plain/text, body has number of triples which were imported
+* 202 Accepted (we got the data, put it in queue, but it is not imported yet)
+* 400 Bad Request (required parameters are not set, or data is not valid syntactically)
+* 422 Unprocessable Entity (we can't import data you provided, for some reason. syntax is ok, but there is some semantic problem)
+* 4xx — various other errors
