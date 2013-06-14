@@ -143,7 +143,7 @@ Parameters:
 
 * `graph` [required]
 
-Example query: `http://api.gridsby.by/v1/append?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fmovies`
+Example query: `http://api.grids.by/v1/append?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fmovies`
 
 This should be a POST request, POST body should contain the triples to import in Turtle or JSON-LD format with the appropriate headers `text/turtle` or `application/ld+json` respectively. 
 
