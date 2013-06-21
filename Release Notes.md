@@ -1,6 +1,6 @@
 ## Release Notes
 
-### 0.0.2, 2013-06-21
+### 0.02, 2013-06-21
 
 **[Grids.by/you](http://grids.by/you)** is a hosting platform for [Semantic Web](https://en.wikipedia.org/wiki/Semantic_web). We provide free [RDF](http://www.w3.org/RDF/ "RDF - Semantic Web Standards") hosting and [OAuth-secured](http://oauth.net/core/1.0a/ "OAuth Core 1.0a") [HTTP-API](API.md) (including [SPARQL](http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/ "SPARQL 1.1 Protocol") endpoint) for getting necessary pieces of data.
 
