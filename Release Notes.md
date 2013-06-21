@@ -1,8 +1,8 @@
 ## Release Notes
 
-### 0.0.1 (initial), 2013-06-14
+### 0.0.2, 2013-06-21
 
-**Grids.by/you** is a hosting platform for [Semantic Web](https://en.wikipedia.org/wiki/Semantic_web). We provide free [RDF](http://www.w3.org/RDF/ "RDF - Semantic Web Standards") hosting and [OAuth-secured](http://oauth.net/core/1.0a/ "OAuth Core 1.0a") HTTP-API for getting necessary pieces of data.
+**[Grids.by/you](http://grids.by/you)** is a hosting platform for [Semantic Web](https://en.wikipedia.org/wiki/Semantic_web). We provide free [RDF](http://www.w3.org/RDF/ "RDF - Semantic Web Standards") hosting and [OAuth-secured](http://oauth.net/core/1.0a/ "OAuth Core 1.0a") [HTTP-API](API.md) (including [SPARQL](http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/ "SPARQL 1.1 Protocol") endpoint) for getting necessary pieces of data.
 
 Under the hood, we use a lot of great opensource components glued together. We're powered by [Virtuoso/6](http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/ "Virtuoso Open-Source Wiki : Virtuoso Open-Source Edition") triplestore, [Redis](http://redis.io/ "Redis") for caching and [Celery](http://www.celeryproject.org/ "Homepage | Celery: Distributed Task Queue")/[RabbitMQ](http://www.rabbitmq.com/ "RabbitMQ - Messaging that just works") for task processing.
 
