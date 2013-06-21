@@ -23,6 +23,7 @@ graph_iri       = 'http://example.com/graph'
 
 
 class OAuthSparqlTest(object):
+    """Wraps OAuth1 with SPARQL-client to provide nice API"""
     def __init__(self, sparql_endpoint, consumer_token, consumer_secret, access_token, access_secret):
         self.endpoint = sparql_endpoint
 
@@ -38,9 +39,10 @@ class OAuthSparqlTest(object):
         return requests.get('%s?%s' % (self.endpoint, qs), headers={"Accept": "application/sparql-results+json"}, auth=self.oauth)
 
 
-sparqler = OAuthSparqlTest('https://api.grids.by/v1/sparql', consumer_token, consumer_secret, access_token, access_secret)
-result = sparqler.query('SELECT * WHERE {?s ?p ?o}', graph_iri)
+if __name__ == '__main__':
+    sparqler = OAuthSparqlTest('https://api.grids.by/v1/sparql', consumer_token, consumer_secret, access_token, access_secret)
+    result = sparqler.query('SELECT COUNT(*) as ?count WHERE {?s ?p ?o}', graph_iri)
 
-data = json.loads(result.content)
+    data = json.loads(result.content)
 
-print(json.dumps(data, indent=4, separators=(',', ': ')))
+    print(json.dumps(data, indent=4, separators=(',', ': ')))
