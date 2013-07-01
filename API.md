@@ -75,7 +75,7 @@ Valid responses are:
 
 ### get
 
-API endpoint: `https://api.grids.by/v1/get.json`
+API endpoint: `https://api.grids.by/v1/get.jsonld`
 
 Parameters:
 
@@ -83,7 +83,7 @@ Parameters:
 * `subject` [required]
 * `deeper` [optional, default=0; can be "0" or "1"]
 
-Example query: `https://api.grids.by/v1/get.json?graph=http://grids.by/graphs/web-apis&subject=http://apis.io/Bing`
+Example query: `https://api.grids.by/v1/get.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&subject=http%3A%2F%2Fapis.io%2FBing`
 
 If you're planning on passing a lot of parameters it's recommended to use POST and provide the parameters in the request body as a JSON:
 ```json
@@ -97,6 +97,25 @@ If you're planning on passing a lot of parameters it's recommended to use POST a
 OAuth signature is required
 
 Returns JSON-LD structure, which corresponds to requested graph/subject pair. Will give 1 additional level of depth, if `deeper=1` parameter is given.
+
+Valid responses are:
+
+* 200 OK, `Content-type: application/ld+json`
+* 4xx — various errors
+
+### download
+
+API endpoint `https://api.grids.by/v1/download.[jsonld|ttl]`
+
+Parameters:
+
+* `graph` [required, Read-access required]
+
+Example query: `https://api.grids.by/v1/download.jsonld?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis`
+
+OAuth signature is required
+
+Returns Graph encoded as JSON-LD or Turtle document.
 
 Valid responses are:
 
