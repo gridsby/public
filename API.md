@@ -52,7 +52,7 @@ Parameters:
 
 Example query: `https://api.grids.by/v1/list.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&filters%5B0%5D%5Bschema%3Aname%5D=BitBucket&filters%5B1%5D%5Bschema%3Aname%5D=GitHub`
 
-If you're planning on passing a lot of parameters it's recommended to use POST and provide the parameters in the request body as a JSON (make sure to provide proper `Content-type` header):
+If you're planning on passing a lot of parameters it's recommended to use POST and provide the parameters in the request body as a JSON (make sure to use `Content-type: application/json` header):
 
 ```json
 {
@@ -60,6 +60,22 @@ If you're planning on passing a lot of parameters it's recommended to use POST a
     "filters":[
         {"schema:name":"BitBucket"},
         {"schema:name":"123ContactForm"},
+    ]
+}
+```
+
+If you need more control over the query (specify language of literal, or use resource on `object` position), you can use [JSON-LD](http://json-ld.org/ "JSON-LD - JSON for Linking Data") with `Content-type: application/ld+json`:
+
+```json
+{
+    "@id": "http://www.ontologyportal.org/SUMO",
+    "@graph": [
+        {
+            "@id": "uri:gridsby:filter",
+            "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
+                "@id": "http://www.ontologyportal.org/SUMO.owl#Organism"
+            }
+        }
     ]
 }
 ```
@@ -85,7 +101,7 @@ Parameters:
 
 Example query: `https://api.grids.by/v1/get.jsonld?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&subject=http%3A%2F%2Fapis.io%2FBing`
 
-If you're planning on passing a lot of parameters it's recommended to use POST and provide the parameters in the request body as a JSON:
+If you're planning on passing a lot of parameters it's recommended to use POST and provide the parameters in the request body as a `application/json`:
 ```json
 {
     "graph":"http://grids.by/graphs/web-apis",
