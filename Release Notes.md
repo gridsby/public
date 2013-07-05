@@ -18,5 +18,5 @@ Both of these will be waived soon
 While users can bring their own data, we also provide some liberally licensed datasets out of the box, including: 
 
 * [OpenCyc](http://www.cyc.com/platform/opencyc) ([CC BY 3.0](http://creativecommons.org/licenses/by/3.0/ "Creative Commons – Attribution 3.0 Unported – CC BY 3.0"))
-* [SUMO](http://www.ontologyportal.org/ "The Suggested Upper Merged Ontology (SUMO)") ("free to use", [© IEEE](http://suo.ieee.org/ "Standard Upper Ontology Working Group (SUO WG) - Home Page"))
-* [WordNet](http://wordnet.princeton.edu/) (MIT-like [WordNet 3.0 License](http://casta-net.jp/~kuribayashi/multi/wns/eng/LICENSE)).
+* [SUMO](http://www.ontologyportal.org/ "The Suggested Upper Merged Ontology (SUMO)") ("free to use", [© IEEE](http://suo.ieee.org/ "Standard Upper Ontology Working Group (SUO WG) - Home Page")) — you can find example application [here](examples/sumo)
+* [WordNet](http://wordnet.princeton.edu/) (MIT-like [WordNet 3.0 License](http://casta-net.jp/~kuribayashi/multi/wns/eng/LICENSE)) — you can find example application [here](examples/word_net)
