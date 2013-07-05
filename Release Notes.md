@@ -1,6 +1,6 @@
 ## Release Notes
 
-### 0.03, 2013-07-01
+### 0.04, 2013-07-05
 
 **[Grids.by/you](http://grids.by/you)** is a hosting platform for [Semantic Web](https://en.wikipedia.org/wiki/Semantic_web). We provide free [RDF](http://www.w3.org/RDF/ "RDF - Semantic Web Standards") hosting and [OAuth-secured](http://oauth.net/core/1.0a/ "OAuth Core 1.0a") [HTTP-API](API.md) (including [SPARQL](http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/ "SPARQL 1.1 Protocol") endpoint) for getting necessary pieces of data.
 
@@ -15,4 +15,4 @@ Known limitations:
 
 Both of these will be waived soon
 
-If you're curious, and just need some data to "test" our platform, you can use [education.data.gov.uk](http://education.data.gov.uk/ "education.data.gov.uk") as a source (go to one of the sample-links there and click on "ttl" to download)
+While users can bring their own data, we also provide some liberally licensed datasets out of the box, including [OpenCyc](http://www.cyc.com/platform/opencyc) ([CC BY 3.0](http://creativecommons.org/licenses/by/3.0/ "Creative Commons – Attribution 3.0 Unported – CC BY 3.0")), [SUMO](http://www.ontologyportal.org/ "The Suggested Upper Merged Ontology (SUMO)") ("free to use", [© IEEE](http://suo.ieee.org/ "Standard Upper Ontology Working Group (SUO WG) - Home Page")), [WordNet](http://wordnet.princeton.edu/) (MIT-like [WordNet 3.0 License](http://casta-net.jp/~kuribayashi/multi/wns/eng/LICENSE)).
