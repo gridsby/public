@@ -25,8 +25,8 @@ You can stop at this point, if you're interested in 3-legged OAuth flow (applica
 
 But, if you're interested in 0-legged OAuth flow (without access to users private data) proceed with 2 more steps:
 
- 1. Click "Create new Access-Token" button
- 1. Write something in Comment field, "Create" and, again, **WRITE DOWN OAuth Access credentials, which will be given to you**
+1. Click "Create new Access-Token" button
+1. Write something in Comment field, "Create" and, again, **WRITE DOWN OAuth Access credentials, which will be given to you**
 
 Now, you have 5 pieces of information, which you'll need to hardcode into your app:
 
@@ -35,6 +35,12 @@ Now, you have 5 pieces of information, which you'll need to hardcode into your a
 3. OAuth Consumer Secret
 4. OAuth Access Token (0-legged flow only)
 5. OAuth Access Secret (0-legged flow only)
+
+## 3-legged OAuth endpoints
+
+* Request-token endpoint:           `https://api.grids.by/oauth/request_token`
+* Token-authorization endpoint:     `https://dev.grids.by/oauth/authorize`
+* Access-token (exchange) endpoint: `https://api.grids.by/oauth/access_token`
 
 ## API
 
