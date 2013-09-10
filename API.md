@@ -1,123 +1,195 @@
-## Introspection
+## Rationale
 
-### predicates
+While using grids.by API, your application would have access to data **graphs**. Those graphs are made of triples, looking like `subject - predicate - object`. Subject of each triple is the identifier of **resource**, and there can be several **predicates** of each resource, linking some **values** to them. Typically (but not always), each resource have one ore more **types** (which is just a `rdf:type` predicate, having special role); resources' type typically describes this resource role in data; resources with same type typically have similar sets of predicates linked to them.
 
-API endpoint: `https://api.grids.by/v1/predicates.json`
+So, to have full and handy access to data, you can receive lists of, filter those lists, and receive individual entities of the kinds:
 
-Parameters:
+* graph
+* resource
+* resource type
+* predicate
+* value
 
-* `graph` [required, Read-access required]
+So, let's rock!
 
-Example query: `https://api.grids.by/v1/predicates.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis`
+## Request formats
 
-OAuth signature is required.
+Our API lets you specify parameters using 3 different methods.
 
-Returns list of RDF-predicates, which are present in graph.
+### 1. GET + Query
 
-Valid responses are:
+While using GET requests, you can send parameters right in URL. If you need to specify several values for one of parameters just repeat the parameter several times.
 
-* 200 OK, `Content-type: application/json`, body is an array of URIs
-* 4xx — various errors
+`https://{endpoint}?param1=value1&param1=value2&param2=value3&filter%5Bhttp%3A%2F%2Fexample.com%2Fpredicate%5D=value`
 
-### values
+Please note, that you can use only simple literal (strings, numbers) `values` this way. Also, make sure to [urlencode](https://en.wikipedia.org/wiki/Percent-encoding) query-parameter names and values.
 
-API endpoint: `https://api.grids.by/v1/values.json`
+### 2. POST + JSON
 
-Parameters:
-
-* `graph` [required, Read-access required]
-* `predicate` [required]
-
-Example query: `https://api.grids.by/v1/value.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&predicate=http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23label`
-
-OAuth signature is required.
-
-Returns list of values, which correspond to the predicate given, in this graph.
-
-Valid responses are:
-
-* 200 OK, `Content-type: application/json`, body is an array of strings
-* 4xx — various errors
-
-## Read data
-
-### list
-
-API endpoint: `https://api.grids.by/v1/list.json`
-
-Parameters:
-
-* `graph` [required, Read-access required]
-* you can use any number of `filters[n][predicate]=value` parameters to filter dataset (don't forget to "urlencode" them)
-
-Example query: `https://api.grids.by/v1/list.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&filters%5B0%5D%5Bschema%3Aname%5D=BitBucket&filters%5B1%5D%5Bschema%3Aname%5D=GitHub`
-
-If you're planning on passing a lot of parameters it's recommended to use POST and provide the parameters in the request body as a JSON (make sure to use `Content-type: application/json` header):
+While using POST requests, you can send parameters in a body of request specifying `Content-type: application/json` header.
 
 ```json
 {
-    "graph":"http://grids.by/graphs/web-apis",
-    "filters":[
-        {"schema:name":"BitBucket"},
-        {"schema:name":"123ContactForm"},
-    ]
+    "param1": ["value1", "value2"],
+    "filter": {"http://example.com/predicate": "value"},
+    "param2": "value3"
 }
 ```
 
-If you need more control over the query (specify language of literal, or use resource on `object` position), you can use [JSON-LD](http://json-ld.org/ "JSON-LD - JSON for Linking Data") with `Content-type: application/ld+json`:
+Please note, that you can use only simple literal (strings, numbers) `values` this way.
+
+### 3. POST + JSON-LD
+
+While using POST requests, you can send parameters in a body of request specifying `Content-type: application/ld+json` header.
 
 ```json
 {
-    "@id": "http://www.ontologyportal.org/SUMO",
+    "@context": {
+        "name": "http://example.com/param1",
+        "related": "http://example.com/param2"
+    },
+    "@id": "http://example.com/graph",
+    "param1": ["value1", "value2"],
+    "param2": "value3",
     "@graph": [
         {
-            "@id": "uri:gridsby:filter",
-            "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
-                "@id": "http://www.ontologyportal.org/SUMO.owl#Organism"
-            }
+            "@type": "filter",
+            "name": {"@value": "value", "@language": "en"},
+            "related": {"@id": "http://example.com/otherResource"}
+        },
+        {
+            "@type": "filter",
+            "name": {"@value": "value2", "@language": "fr"}
         }
     ]
 }
 ```
 
-OAuth signature is required.
+This approach is the most verbose, but it gives you the maximum flexibility.
 
-Returns list of RDF-subjects, which have matching predicate/value pairs.
+## Introspection
 
-Valid responses are:
+### Graphs
 
-* 200 OK, `Content-type: application/json`, body is an array of URIs, which are "subjects" of the items
-* 4xx — various errors
+|               |                                                                                           |
+|---------------|-------------------------------------------------------------------------------------------|
+|Endpoint:      |`https://api.grids.by/v1/graphs.jsonld`
+|Authorization: | **required**
+|Parameters:    | `id` [optional],<br>`access` [optional]
+|Returns:       | JSON-LD
+|Response codes:| 200 OK,<br>403 Forbidden — specified graph is not accessible
+
+Returns JSON-LD encoded graph, which contains either one (if `id` is specified) or all resources which describe graphs accessible to this application.
+
+If `access` parameter is specified and has comma-separated list of the following words: `Read`, `Append` then app will get only graphs, to which it has specified access-rights. If more than one access-right is specified it means that app has at least one of access-rights specified (`OR` relation).
+
+
+### Predicates
+
+|               |                                                                                           |
+|---------------|-------------------------------------------------------------------------------------------|
+|Endpoint:      |`https://api.grids.by/v1/predicates.json` or `https://api.grids.by/v1/predicates.jsonld`
+|Authorization: | **required**
+|Parameters:    | `graph` [required, Read-access required],<br>`resource_type` [optional]<br>`id` [optional]
+|Returns:       | JSON: array of predicates or JSON-LD
+|Response codes:| 200 OK,<br>4xx
+
+Returns list of RDF-predicates, which are present in graph. Either `id` or `resource_type` parameters might be specified (`id` has priority).
+
+If `resource_type` is specified, then only predicates attached to objects of specified `rdf:type` are listed (several parameters mean `OR`).
+
+If content is returned as JSON then array of IDs is returned.
+
+If content is returned as JSON-LD than information from schema-definition is added (if we have it).
+
+### Types
+
+|               |                                                                                           |
+|---------------|-------------------------------------------------------------------------------------------|
+|Endpoint:      |`https://api.grids.by/v1/types.json` or `https://api.grids.by/v1/types.jsonld`
+|Authorization: | **required**
+|Parameters:    | `graph` [required, Read-access required],<br>`has_predicate` [optional]
+|Returns:       | JSON: array of types or JSON-LD
+|Response codes:| 200 OK,<br>4xx
+
+Returns list of RDF-types, resources of which are present in `graph`. If `has_predicate` parameter is specified, list is additionally filtered to include only types, resources of which have specified predicate.
+
+If content is returned as JSON then array of IDs is returned.
+
+If content is returned as JSON-LD than information from schema-definition is added (if we have it).
+
+
+### Values
+
+|               |                                                                                           |
+|---------------|-------------------------------------------------------------------------------------------|
+|Endpoint:      |`https://api.grids.by/v1/values.json`
+|Authorization: | **required**
+|Parameters:    | `graph` [required, Read-access required],<br>`predicate` [required],<br>`resource_type` [optional]
+|Returns:       | JSON-encoded array of values which, in their turn, are encoded according to JSON-LD rules. see: [6.4 Typed Values](http://json-ld.org/spec/latest/json-ld/#typed-values "JSON-LD 1.0") and [6.9 String Internationalization](http://json-ld.org/spec/latest/json-ld/#string-internationalization "JSON-LD 1.0").
+|Response codes:| 200 OK,<br>4xx
+
+Returns list of values, which correspond to the `predicate` given, in this graph. If `resource_type` parameter is specified, then additional filtering by rdf-type of resources, which have predicate is applied.
+
+#### Example
+
+Request: `https://api.grids.by/v1/values.json?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&predicate=http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23label`
+
+Response:
+
+```json
+[
+    "foo",
+    {"@id": "http://example.com/resource"},
+    {"@value": "bar", "@language": "en"},
+    {"@value": "2010-05-29T14:17:39+02:00", "@type": "http://www.w3.org/2001/XMLSchema#dateTime"}
+]
+```
+
+
+## Read data
+
+### Resources
+
+|               |                                                 |
+|---------------|-------------------------------------------------|
+|Endpoint:      |`https://api.grids.by/v1/resources.json` or `https://api.grids.by/v1/resources.jsonld`
+|Authorization: | **required**
+|Parameters:    | `graph` [required],<br>`id` [optional],<br>`predicate` [optional],<br>`filter` [optional],<br>`deeper` [optional],<br>`page` [optional],<br>`pagesize` [optional]
+|Returns:       | JSON or JSON-LD
+|Response codes:| 200 OK,<br>4xx
+
+Returns either:
+
+* JSON encoded list of subjects (if`json` is chosen as format) from graph specified, which correspond to the given conditions. `deeper` has no meaning in this case
+* JSON-LD encoded graph of resources (if `jsonld` is chosen as format), which correspond to the given conditions.
+
+Params description:
+
+* `graph`
+* `id` - string or list of strings, setting concrete id(s) of resource(s) to fetch;
+* `predicate` - list of strings, if specified, returns only resources, having those predicates linked with them;
+* `filter` - list of predicate-value pairs for resource filtering ( **TBD** in more details);
+* `deeper` - integer, if specified, unfolds nested resources (in other words, turns `"predicate": {"@id": "some:resource:id"}` into `"predicate": {full resource representation}` ). Nested-to-nested resources are unfolded to the level, specified by `deeper` value. Maximum 5, default 0.
+* `page`, `pagesize` - list paging. `page` is 1-based, default (and maximum) `pagesize` is 10'000.
+
+If you use GET request format, then `filter` should be used in `filter[http://example.com/predicate]=value` form.
+
+If you use JSON-LD request format, things get more powerful:
+
+* Implementation detail is, that (in JSON-LD mode) implicit `@context` is specified by API-server which includes unaliasing of params into full uris: `id` is converted into `urn:gridsby:id`, etc. So, it's ok to use full-uris if you want explicitness, but for using those words as literal values you will need to use: `{"@value": "id"}`
+* Instead of `graph` parameter you just use top-level `@graph` declaration with corresponding `@id`
+* `id` param is converted into objects without contents `{"@id": "http://example.com/id"}` inside of forementioned `@graph` section.
+* `predicate` and `filter` params are converted into anonymous objects of `filter` type inside of `@graph` section. Each such object is a pattern, which real objects in graph are matched against. So, if you specify several key-value pairs inside the object-pattern then `AND` relation between them is implied, but if you use several object-patterns those are treated as `OR` pattern. To state, that **predicate** is present in resource you should use a special value 'exists' (unaliased into `urn:gridsby:exists`) and to state that it doesn't exist a special value `not-exists`.
+* Other parameters stay on top-level (so, as far as JSON-LD is concerned, they are aditional predicate-value pairs of the graph).
+
+### list
+
+*(deprecated)*
 
 ### get
 
-API endpoint: `https://api.grids.by/v1/get.jsonld`
-
-Parameters:
-
-* `graph` [required, Read-access required]
-* `subject` [required]
-* `deeper` [optional, default=0; can be "0" or "1"]
-
-Example query: `https://api.grids.by/v1/get.jsonld?graph=http%3A%2F%2Fgrids.by%2Fgraphs%2Fweb-apis&subject=http%3A%2F%2Fapis.io%2FBing`
-
-If you're planning on passing a lot of parameters it's recommended to use POST and provide the parameters in the request body as a `application/json`:
-```json
-{
-    "graph":"http://grids.by/graphs/web-apis",
-    "subject":"http://apis.io/Bing",
-    "deeper":0
-}
-```
-
-OAuth signature is required
-
-Returns JSON-LD structure, which corresponds to requested graph/subject pair. Will give 1 additional level of depth, if `deeper=1` parameter is given.
-
-Valid responses are:
-
-* 200 OK, `Content-type: application/ld+json`
-* 4xx — various errors
+*(deprecated)*
 
 ### download
 
