@@ -1,8 +1,8 @@
 ## Release Notes
 
-### 0.05, 2013-07-12
+### 0.06, 2013-09-10
 
-**[Grids.by/you](http://grids.by/you)** is a hosting platform for [Semantic Web](https://en.wikipedia.org/wiki/Semantic_web). We provide free [RDF](http://www.w3.org/RDF/ "RDF - Semantic Web Standards") hosting and [OAuth-secured](http://oauth.net/core/1.0a/ "OAuth Core 1.0a") [HTTP-API](API.md) (including [SPARQL](http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/ "SPARQL 1.1 Protocol") endpoint) for getting necessary pieces of data.
+**[Grids.by/you](http://grids.by/you)** is a hosting platform for [Semantic Web](https://en.wikipedia.org/wiki/Semantic_web). We provide free [RDF](http://www.w3.org/RDF/ "RDF - Semantic Web Standards") hosting, [OAuth-secured](http://oauth.net/core/1.0a/ "OAuth Core 1.0a") noun-based [Web API](API.md) (including [SPARQL](http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/ "SPARQL 1.1 Protocol") endpoint) for getting necessary pieces of data and **Grids.IO** web-application hosting.
 
 Under the hood, we use a lot of great opensource components glued together. We're powered by [Virtuoso/7](http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/ "Virtuoso Open-Source Wiki : Virtuoso Open-Source Edition") triplestore, [Redis](http://redis.io/ "Redis") for caching and [Celery](http://www.celeryproject.org/ "Homepage | Celery: Distributed Task Queue")/[RabbitMQ](http://www.rabbitmq.com/ "RabbitMQ - Messaging that just works") for task processing.
 
